@@ -4,20 +4,22 @@ import axios from 'axios'
 import Contacts from './components/Contacts'
 import Search from './components/Search'
 
+import contacts from './services/contacts'
+
 
 
 const App = () => {
 
   // STATES
   const [persons, setPersons] = useState([]) 
-  const [newPerson, setNewPerson] = useState({name: '', number: '', id: persons.length + 1})
+  const [newPerson, setNewPerson] = useState({name: '', number: ''})
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    contacts
+      .getAll()
+      .then(contacts => {
+        setPersons(contacts)
       })
   }, [])
 
@@ -29,18 +31,29 @@ const App = () => {
     if(persons.map(person => person.name).includes(newPerson.name)){
       alert(`${newPerson.name} is already in the phonebook`)
     } else {
-      setPersons(persons.concat(newPerson))
-    }
-    setNewPerson({name: '', number: '', id: persons.length + 1})
+      contacts
+        .create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+        })
+      setNewPerson({name: '', number: ''})
+      }
+  }
 
+  const handleRemove = (id) => {
+    contacts 
+      .remove(id)
+      .then(returnedPerson => {
+        setPersons(persons.filter(person => person.id != returnedPerson.id))
+      })
   }
 
   const handleChangeName = (event) => {  
-    setNewPerson({name: event.target.value, number: newPerson.number, id: persons.length + 1})
+    setNewPerson({name: event.target.value, number: newPerson.number})
   }
 
   const handleChangeNumber = (event) => {  
-    setNewPerson({name: newPerson.name, number: event.target.value, id: persons.length + 1})
+    setNewPerson({name: newPerson.name, number: event.target.value})
   }
 
   const handleChangeSearch = (event) => {  
@@ -61,7 +74,7 @@ const App = () => {
         <div><button type="submit">add</button></div>
       </form>
       <h2>Numbers</h2>
-      <Contacts persons={filteredPersons}/>
+      <Contacts persons={filteredPersons} removalFunction={handleRemove}/>
     </div>
   )
 }
