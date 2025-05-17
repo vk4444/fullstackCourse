@@ -6,6 +6,8 @@ import Search from './components/Search'
 
 import contacts from './services/contacts'
 
+import './index.css'
+
 
 
 const App = () => {
@@ -14,6 +16,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newPerson, setNewPerson] = useState({name: '', number: ''})
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     contacts
@@ -36,6 +39,13 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
         })
+
+        setMessage(
+          `Contact '${newPerson.name}' was added to the database`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       setNewPerson({name: '', number: ''})
       }
   }
@@ -66,6 +76,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Search value={search} onChange={handleChangeSearch} />
       <h2>add a new</h2>
       <form onSubmit={handleSubmit}>
@@ -75,6 +86,18 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <Contacts persons={filteredPersons} removalFunction={handleRemove}/>
+    </div>
+  )
+}
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='success'>
+      {message}
     </div>
   )
 }
