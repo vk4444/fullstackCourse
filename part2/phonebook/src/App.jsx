@@ -54,7 +54,7 @@ const App = () => {
     contacts 
       .remove(id)
       .then(returnedPerson => {
-        setPersons(persons.filter(person => person.id != returnedPerson.id))
+        setPersons(persons.filter(person => person.id != id))
       })
   }
 
