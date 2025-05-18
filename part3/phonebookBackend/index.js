@@ -6,6 +6,7 @@ morgan.token('body', function getBody (req) {
   return JSON.stringify(req.body)
 })
 
+app.use(express.static('dist'))
 app.use(morgan(':method :url :status :response-time :body'))
 app.use(express.json())
 
@@ -103,7 +104,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
