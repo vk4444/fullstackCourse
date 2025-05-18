@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+require('dotenv').config()
+
+const Person = require('./models/person')
+
+
+
 
 morgan.token('body', function getBody (req) {
   return JSON.stringify(req.body)
@@ -9,6 +15,7 @@ morgan.token('body', function getBody (req) {
 app.use(express.static('dist'))
 app.use(morgan(':method :url :status :response-time :body'))
 app.use(express.json())
+
 
 
 let persons = [
@@ -61,15 +68,15 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(savedPerson => {
+    persons.concat(savedPerson)
+    response.json(savedPerson)
+  })
 })
 
 app.get('/', (request, response) => {
@@ -77,7 +84,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+      response.json(persons)
+    })
 })
 
 app.get('/info', (request, response) => {
@@ -88,20 +97,15 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  const person = persons.find(person => person.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Person.findById(request.params.id).then(person => {
+      response.json(person)
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
+  Person.findByIdAndDelete(request.params.id).then(person => {
+      response.json(person)
+    })
 })
 
 const PORT = process.env.PORT || 3001
