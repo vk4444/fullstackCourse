@@ -32,7 +32,15 @@ const App = () => {
 
     // Checks if name is already in the list
     if(persons.map(person => person.name).includes(newPerson.name)){
-      alert(`${newPerson.name} is already in the phonebook`)
+      const id = persons.find(person => person.name == newPerson.name).id
+      contacts
+      .update(id, newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson
+  ))
+})
+    setNewPerson({name: '', number: ''})
+
     } else {
       contacts
         .create(newPerson)
