@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Contacts from './components/Contacts'
 import Search from './components/Search'
@@ -61,7 +60,7 @@ const App = () => {
   const handleRemove = (id) => {
     contacts 
       .remove(id)
-      .then(returnedPerson => {
+      .then(() => {
         setPersons(persons.filter(person => person.id != id))
       })
   }
