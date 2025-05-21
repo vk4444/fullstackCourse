@@ -3,14 +3,17 @@ require('dotenv').config()
 const app = express()
 
 const Note = require('./models/note')
-const PORT = process.env.PORT
-const url = process.env.MONGODB_URI
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
+logger.info(`Server running on port ${config.PORT}`)
 
 
 app.use(express.static('dist'))
 app.use(express.json())
 
 const mongoose = require('mongoose')
+const url = config.MONGODB_URI
 
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
@@ -95,7 +98,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -123,7 +126,7 @@ app.put('/api/notes/:id', (request, response, next) => {
 // this has to be the last loaded middleware, also all the routes should be registered before this!
 app.use(errorHandler)
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
 
