@@ -37,11 +37,11 @@ const Blog = ({ blog, blogs, setBlogs }) => {
 
   if (!detailsShown) {
     return (
-      <div style={blogStyle}>{blog.title} {blog.author} <button onClick={() => setDetailsShown(true)}>view</button></div>
+      <div style={blogStyle}>{blog.title} {blog.author} <button onClick={() => setDetailsShown(true)} className='blog'>view</button></div>
     )
   } else {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         <p>{blog.title}<button onClick={() => setDetailsShown(false)}>hide details</button></p>
         <p>{blog.url}</p>
         <p>{blog.likes} <button onClick={addLike}>like</button></p>

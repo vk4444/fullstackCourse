@@ -48,7 +48,7 @@ const CreateNewForm = (props) => {
         <input
           type="text"
           value={author}
-          name="Title"
+          name="Author"
           onChange={({ target }) => setAuthor(target.value)}
         />
       </div>
@@ -58,7 +58,7 @@ const CreateNewForm = (props) => {
         <input
           type="text"
           value={url}
-          name="Title"
+          name="Url"
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
@@ -68,7 +68,7 @@ const CreateNewForm = (props) => {
   )
 }
 
-CreateNewForm.PropTypes = {
+CreateNewForm.propTypes = {
   setBlogs: PropTypes.func.isRequired,
   onSubmitSuccess: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired
