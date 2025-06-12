@@ -1,0 +1,10 @@
+POST http:////localhost:3001/api/blogs
+Content-Type:application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZvanRhIiwiaWQiOiI2ODM2MjljZjdiNWQ0YjEyYjAwNDZkMTMiLCJpYXQiOjE3NDgzODIyOTB9.Tc3cBD6MwtCz9zA6qWB-mNqVrmdXQHFY_HOMwyyj7kw
+
+{
+    "title": "Tohle jsem napsal já s autentikací",
+    "author": "Vojta",
+    "url": "abcd.cz",
+    "likes": 20
+}
