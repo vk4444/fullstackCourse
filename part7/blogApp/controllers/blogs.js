@@ -48,7 +48,8 @@ blogRouter.post('/', async (request, response) => {
       author: body.author,
       url: body.url,
       likes: body.likes || 0,
-      user: user._id
+      user: user._id,
+      comments: body.comments || []
 
     })
 
@@ -73,6 +74,7 @@ blogRouter.put('/:id', async (request, response, next) => {
     return response.status(401).json({ error: 'token invalid' })
   }
 
+  // We still verify the user is authenticated, but we use the blog's original user
   const user = await User.findById(decodedToken.id)
 
   if (!user) {
@@ -84,7 +86,8 @@ blogRouter.put('/:id', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user._id
+    user: body.user, // Keep the original user from the request
+    comments: body.comments,
   }
 
   try {
