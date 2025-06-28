@@ -1,4 +1,5 @@
 import DiaryEntries from "./components/DiaryEntries";
+import DiaryEntryForm from "./components/DiaryEntryForm";
 import axios from 'axios';
 import { useState, useEffect } from "react";
 
@@ -15,7 +16,10 @@ const App = () => {
   }, [])
 
   return (
-    <DiaryEntries diaryEntries={diaries}/>
+    <>
+      <DiaryEntryForm/>
+      <DiaryEntries diaryEntries={diaries}/>
+    </>
   )
     
 };
